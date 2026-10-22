@@ -1,0 +1,95 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="MO31_Leonov_Digits.FormMain"
+        Width="305"
+        Height="695"
+        CanResize="False"
+        Title="MO31_Leonov_Digits">
+    <Window.Styles>
+        <Style Selector="UniformGrid > Button">
+            <Setter Property="Width" Value="75" />
+            <Setter Property="Height" Value="75" />
+            <Setter Property="BorderBrush" Value="Gray" />
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1" />
+                </ControlTemplate>
+            </Setter>
+        </Style>
+        <Style Selector="UniformGrid > Button:focus-visible">
+            <Setter Property="BorderBrush" Value="DodgerBlue" />
+        </Style>
+    </Window.Styles>
+
+    <StackPanel Spacing="16"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+        <UniformGrid Rows="5"
+                     Columns="3"
+                     Width="225"
+                     Height="375"
+                     HorizontalAlignment="Center"
+                     VerticalAlignment="Center">
+            <Button TabIndex="0" Background="White" Click="Pixel_Click" />
+            <Button TabIndex="1" Background="White" Click="Pixel_Click" />
+            <Button TabIndex="2" Background="White" Click="Pixel_Click" />
+
+            <Button TabIndex="3" Background="White" Click="Pixel_Click" />
+            <Button TabIndex="4" Background="White" Click="Pixel_Click" />
+            <Button TabIndex="5" Background="White" Click="Pixel_Click" />
+
+            <Button TabIndex="6" Background="White" Click="Pixel_Click" />
+            <Button TabIndex="7" Background="White" Click="Pixel_Click" />
+            <Button TabIndex="8" Background="White" Click="Pixel_Click" />
+
+            <Button TabIndex="9" Background="White" Click="Pixel_Click" />
+            <Button TabIndex="10" Background="White" Click="Pixel_Click" />
+            <Button TabIndex="11" Background="White" Click="Pixel_Click" />
+
+            <Button TabIndex="12" Background="White" Click="Pixel_Click" />
+            <Button TabIndex="13" Background="White" Click="Pixel_Click" />
+            <Button TabIndex="14" Background="White" Click="Pixel_Click" />
+        </UniformGrid>
+
+        <Button Content="Распознать"
+                TabIndex="15"
+                Width="225"
+                Height="40"
+                HorizontalContentAlignment="Center" />
+
+        <StackPanel Spacing="4">
+            <TextBlock Text="Правильная цифра" />
+            <NumericUpDown x:Name="numericUpDown_NecessaryOutput"
+                           TabIndex="16"
+                           Width="225"
+                           Height="40"
+                           Minimum="0"
+                           Maximum="9"
+                           Increment="1"
+                           Value="0"
+                           FormatString="0"
+                           ParsingNumberStyle="Integer"
+                           ClipValueToMinMax="True"
+                           ShowButtonSpinner="True"
+                           AutomationProperties.Name="Правильная цифра" />
+        </StackPanel>
+
+        <Button x:Name="ButtonSaveTrainSample"
+                Click="ButtonSaveTrainSample_Click"
+                Content="Сохранить обучающую"
+                TabIndex="17"
+                Width="225"
+                Height="40"
+                HorizontalContentAlignment="Center" />
+
+        <Button x:Name="ButtonSaveTestSample"
+                Click="ButtonSaveTestSample_Click"
+                Content="Сохранить тестовую"
+                TabIndex="18"
+                Width="225"
+                Height="40"
+                HorizontalContentAlignment="Center" />
+    </StackPanel>
+</Window>

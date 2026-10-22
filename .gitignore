@@ -1,0 +1,21 @@
+# Build results
+**/bin/
+**/obj/
+
+# IDE settings
+.idea/
+.vscode/
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+
+# Runtime-generated datasets and neural-network weights
+**/train.txt
+**/test.txt
+**/memory/
