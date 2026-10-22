@@ -4,16 +4,26 @@ namespace MO31_Leonov_Digits.NeuroNet;
 
 class OutputLayer : Layer
 {
-    private OutputLayer(int non, int nopn, NeuronType nt, string nm_Layer)
-        : base(non, nopn, nt, nm_Layer)
+    public OutputLayer(int non, int nopn, NeuronType nt, string type) :
+        base(non, nopn, nt, type)
     {
     }
 
-    // Создаёт полностью готовый слой после загрузки или инициализации его весов.
-    public static async Task<OutputLayer> CreateAsync(int non, int nopn, NeuronType nt, string nm_Layer)
+    // прямой проход
+    public override void Recognize(Network net, Layer nextLayer)
     {
-        var layer = new OutputLayer(non, nopn, nt, nm_Layer);
-        await layer.InitializeAsync();
-        return layer;
+        double e_sum = 0;
+        for (int i = 0; i < neurons.Length; i++)
+            e_sum += neurons[i].Output;
+
+        for (int i = 0; i < neurons.Length; i++)
+            net.Fact[i] = neurons[i].Output / e_sum;
+    }
+
+    // Обратный проход
+    public override double[] BackwardPass(double[] errors)
+    {
+        double[] gr_sum = new double[numofprevneurons];
+        return gr_sum;
     }
 }

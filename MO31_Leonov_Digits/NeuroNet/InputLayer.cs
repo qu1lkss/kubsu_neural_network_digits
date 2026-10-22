@@ -16,4 +16,16 @@ class InputLayer : Layer
         await layer.InitializeAsync();
         return layer;
     }
+
+    // Реализацию прямого прохода добавим отдельно для входного слоя.
+    public override void Recognize(Network net, Layer nextLayer)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    // Реализацию обратного прохода добавим отдельно для входного слоя.
+    public override double[] BackwardPass(double[] stuff)
+    {
+        throw new System.NotImplementedException();
+    }
 }

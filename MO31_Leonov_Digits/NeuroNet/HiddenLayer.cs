@@ -4,16 +4,26 @@ namespace MO31_Leonov_Digits.NeuroNet;
 
 class HiddenLayer : Layer
 {
-    private HiddenLayer(int non, int nopn, NeuronType nt, string nm_Layer)
-        : base(non, nopn, nt, nm_Layer)
+    public HiddenLayer(int non, int nopn, NeuronType nt, string type) :
+        base(non, nopn, nt, type)
     {
     }
 
-    // Создаёт полностью готовый слой после загрузки или инициализации его весов.
-    public static async Task<HiddenLayer> CreateAsync(int non, int nopn, NeuronType nt, string nm_Layer)
+    // прямой проход
+    public override void Recognize(Network net, Layer nextLayer)
     {
-        var layer = new HiddenLayer(non, nopn, nt, nm_Layer);
-        await layer.InitializeAsync();
-        return layer;
+        double[] hidden_out = new double[numofneurons];
+        for (int i = 0; i < numofneurons; i++)
+            hidden_out[i] = neurons[i].Output;
+
+        nextLayer.Data = hidden_out; // передача выходного сигнала на вход
+                                    // следующего слоя
+    }
+
+    // Обратный проход
+    public override double[] BackwardPass(double[] gr_sums)
+    {
+        double[] gr_sum = new double[numofprevneurons];
+        return gr_sum;
     }
 }

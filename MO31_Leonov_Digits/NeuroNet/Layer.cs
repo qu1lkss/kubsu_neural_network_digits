@@ -231,4 +231,7 @@ abstract class Layer
         }
         File.WriteAllLines(path, lines);
     }
+
+    abstract public void Recognize(Network net, Layer nextLayer);//для прямых проходов
+    abstract public double[] BackwardPass(double[] stuff);//и обратных
 }
