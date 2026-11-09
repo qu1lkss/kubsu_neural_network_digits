@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace MO31_Leonov_Digits.NeuroNet;
 
 class Network
@@ -18,4 +20,22 @@ class Network
     public double[] E_error_avr { get => e_error_avr; set => e_error_avr = value; }
 
     //конструктор
+    public Network() { }
+
+    // Загрузка или создание весов всех слоёв перед первым распознаванием.
+    public async Task InitializeAsync()
+    {
+        await hidden_layer1.InitializeAsync();
+        await hidden_layer2.InitializeAsync();
+        await output_layer.InitializeAsync();
+    }
+
+    //прямой проход сети
+    public void ForwardPass(double[] netInput)
+    {
+        hidden_layer1.Data = netInput;
+        hidden_layer1.Recognize(null, hidden_layer2);
+        hidden_layer2.Recognize(null, output_layer);
+        output_layer.Recognize(this, null);
+    }
 }

@@ -61,7 +61,7 @@ abstract class Layer
     }
 
     // Асинхронное создание слоя позволяет дождаться кнопки ОК без блокировки интерфейса.
-    protected async Task InitializeAsync()
+    internal async Task InitializeAsync()
     {
         double[,] Weights; // временный массив синаптических весов текущего слоя
 
