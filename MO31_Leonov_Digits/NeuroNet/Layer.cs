@@ -96,6 +96,8 @@ abstract class Layer
 
     // Метод работы с массивом синаптических весов слоя
     // При сохранении вызываем через await, чтобы дождаться закрытия предупреждения.
+    public Task SaveWeightsAsync() => WeightInitialize(MemoryMode.SET, pathFileWeights);
+
     public async Task<double[,]> WeightInitialize(MemoryMode mm, string path)
     {
         char[] delim = new char[] { ';', ' ' }; // Разделитель слов — ; и "пробел"
