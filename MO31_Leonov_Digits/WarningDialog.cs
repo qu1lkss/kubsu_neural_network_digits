@@ -12,12 +12,16 @@ namespace MO31_Leonov_Digits;
 // Окно предупреждения для Avalonia — аналог MessageBox из WinForms.
 internal static class WarningDialog
 {
-    public static async Task ShowAsync(string message)
+    public static Task ShowAsync(string message) => ShowDialogAsync(message, true);
+
+    public static Task ShowInformationAsync(string message) => ShowDialogAsync(message, false);
+
+    private static async Task ShowDialogAsync(string message, bool isWarning)
     {
         // Создание и показ окна выполняются в потоке интерфейса.
         if (!Dispatcher.UIThread.CheckAccess())
         {
-            await Dispatcher.UIThread.InvokeAsync(() => ShowAsync(message));
+            await Dispatcher.UIThread.InvokeAsync(() => ShowDialogAsync(message, isWarning));
             return;
         }
 
@@ -37,7 +41,7 @@ internal static class WarningDialog
         };
         var dialog = new Window
         {
-            Title = "Внимание",
+            Title = isWarning ? "Внимание" : "Информация",
             Width = 460,
             SizeToContent = SizeToContent.Height,
             CanResize = false,
@@ -50,7 +54,7 @@ internal static class WarningDialog
                 {
                     new TextBlock
                     {
-                        Text = "⚠ " + message,
+                        Text = (isWarning ? "⚠ " : "ⓘ ") + message,
                         TextWrapping = TextWrapping.Wrap
                     },
                     okButton
@@ -61,7 +65,7 @@ internal static class WarningDialog
         // Закрытие окна крестиком отменяет сохранение: подтверждение — только кнопкой ОК.
         okButton.Click += (_, _) => dialog.Close(true);
         bool confirmed = await dialog.ShowDialog<bool>(owner);
-        if (!confirmed)
+        if (isWarning && !confirmed)
         {
             throw new OperationCanceledException("Сохранение весов отменено.");
         }

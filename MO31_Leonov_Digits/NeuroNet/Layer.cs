@@ -16,8 +16,8 @@ abstract class Layer
     string pathFileWeights; // путь к файлу синаптических весов для нейросети
     protected int numofneurons; // число нейронов текущего слоя
     protected int numofprevneurons; // число нейронов предыдущего слоя
-    protected const double learningrate = 0.05d; // скорость обучения
-    protected const double momentum = 0.050d; // момент инерции
+    protected const double learningrate = 0.0005d; // скорость обучения
+    protected const double momentum = 0.00d; // момент инерции
     protected double[,] lastdeltaweights; // веса предыдущей итерации обучения
     protected Neuron[] neurons; // массив нейронов текущего слоя
     private readonly NeuronType neuronType;
@@ -51,7 +51,7 @@ abstract class Layer
                               // с одноимённым файлом памяти
 
         // путь к каталогу, где находятся файлы синаптических весов для нейросети
-        pathDirWeights = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "memory");
+        pathDirWeights = AppDomain.CurrentDomain.BaseDirectory;
 
         // путь к файлу синаптических весов для текущего слоя
         pathFileWeights = Path.Combine(pathDirWeights, name_Layer + "_memory.csv");
@@ -64,6 +64,7 @@ abstract class Layer
     internal async Task InitializeAsync()
     {
         double[,] Weights; // временный массив синаптических весов текущего слоя
+        string initialPath = Path.Combine(pathDirWeights, "memory", Path.GetFileName(pathFileWeights));
 
         // определяет, существует ли pathFileWeights — файл синаптических весов текущего слоя
         if (File.Exists(pathFileWeights))
@@ -71,11 +72,15 @@ abstract class Layer
             // считываем файл весов в режиме GET
             Weights = await WeightInitialize(MemoryMode.GET, pathFileWeights);
         }
+        else if (File.Exists(initialPath))
+        {
+            Weights = await WeightInitialize(MemoryMode.GET, initialPath);
+        }
         else
         {
-            Directory.CreateDirectory(pathDirWeights); // создание отсутствующего каталога
             // создание и немедленное сохранение начальных весов, если файла весов нет
-            Weights = await WeightInitialize(MemoryMode.INIT, pathFileWeights);
+            Directory.CreateDirectory(Path.Combine(pathDirWeights, "memory"));
+            Weights = await WeightInitialize(MemoryMode.INIT, initialPath);
         }
 
         ApplyWeights(Weights);
@@ -164,9 +169,7 @@ abstract class Layer
                  * В одной строке содержится на одно значение больше, чем нейронов в предыдущем слое:
                  * вес смещения + количество нейронов предыдущего слоя.
                  *
-                 * При начальной инициализации автоматически создаётся папка memory,
-                 * где хранятся файлы весов всех слоёв нейронной сети.
-                 * Эта папка располагается рядом с исполняемым файлом приложения.
+                 * Начальные веса хранятся в папке memory рядом с исполняемым файлом приложения.
                  * Если файла весов нет, программа предупреждает об этом и после нажатия ОК
                  * формирует начальные веса и сразу сохраняет недостающий файл.
                  *
